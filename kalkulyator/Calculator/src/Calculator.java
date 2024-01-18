@@ -4,7 +4,17 @@ public class Calculator {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите первое число(от 1 до 10 или от I до X):");
-        String input1 = scanner.next().toUpperCase();
+        String input = scanner.nextLine();
+        System.out.println("Ответ: " + calc(input));
+    }
+    public static  String calc(String input){
+
+        String[] tokens = input.split(" ");
+        if (tokens.length != 3) {
+            throw new IllegalArgumentException("Неверное количество операндов. Введите выражение в формате 'число оператор число'.");
+        }
+
+        String input1 =tokens[0].toUpperCase();
         int num1;
         try {
             num1 = convertToArabic(input1);
@@ -20,8 +30,9 @@ public class Calculator {
         }
 
 
-        String operator = scanner.next();
-        String input2 = scanner.next().toUpperCase();
+
+        String operator =tokens[1];
+        String input2 = tokens[2].toUpperCase();
         int num2;
         try {
             num2 = convertToArabic(input2);
@@ -47,7 +58,7 @@ public class Calculator {
                 result = num1 + num2;
                 break;
             case "-":
-                result = Math.abs(num1 - num2);
+                result = num1 - num2;
                 break;
             case "*":
                 result = num1 * num2;
@@ -68,10 +79,11 @@ public class Calculator {
 
 
         if ((isRomanNumeral(input1) && isRomanNumeral(input2)) || (isRomanNumeral(input1) && isRomanNumeral(input2))) {
-            System.out.println("Ответ: " + convertToRoman(result));
+           return String.valueOf( convertToRoman(result));
         }
         else
-        System.out.println("Ответ: " + result);
+            return String.valueOf(result);
+
     }
 
     private static int convertToArabic(String input) {
@@ -102,8 +114,8 @@ public class Calculator {
     }
 
     private static String convertToRoman(int number) {
-        if (number < 0 || number > 100) {
-            throw new IllegalArgumentException("Ответ должен быть положительным");
+        if (number < 0 ||  number > 100) {
+            throw new IllegalArgumentException("Ответ должен быть больше нуля");
         }
         StringBuilder result = new StringBuilder();
         int[] arabicValues = {100, 90, 50, 40, 10, 9, 5, 4, 1};
